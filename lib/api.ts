@@ -35,7 +35,7 @@ class NebulaAPI {
 
   constructor(baseUrl: string = API_BASE_URL) {
     this.baseUrl = baseUrl
-    
+
     // Load auth token from localStorage (client-side only)
     if (typeof window !== 'undefined') {
       this.authToken = localStorage.getItem('nebula_auth_token')
@@ -46,9 +46,9 @@ class NebulaAPI {
     endpoint: string,
     options: RequestInit = {}
   ): Promise<T> {
-    const headers: HeadersInit = {
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      ...options.headers,
+      ...(options.headers as Record<string, string> || {}),
     }
 
     if (this.authToken) {
@@ -147,7 +147,7 @@ class NebulaAPI {
     const formData = new FormData()
     formData.append('file', file)
 
-    const headers: HeadersInit = {}
+    const headers: Record<string, string> = {}
     if (this.authToken) {
       headers['Authorization'] = `Bearer ${this.authToken}`
     }
